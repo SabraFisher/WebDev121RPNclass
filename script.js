@@ -1,4 +1,4 @@
-"use strict";
+
 /*
     subtract
     multiply
@@ -12,66 +12,49 @@ rpn.push(5);
 rpn.push(5);
 rpn.add();
 */
+let rpn = new RPN();
 
-document.addEventListener("DOMContentLoaded", (event) => {
-    
-    //make stack
-    let stack = [];
-
-    //get user input
-    let pushbutton = document.getElementById("push");
-    pushbutton.addEventListener("click", (event) => {
+document.addEventListener("DOMContentLoaded", () => {
+    // Push button
+    document.getElementById("push").addEventListener("click", () => {
         let number = document.getElementById("number1");
         let n = parseInt(number.value);
-
-        stack.push(n);
-        number.value = "";
-        displayStack(stack);
+        if (!isNaN(n)) {
+            rpn.push(n);
+            number.value = "";
+            displayStack(rpn.stack);
+        }
     });
 
-    let addbutton = document.getElementById("add");
-    addbutton.addEventListener("click", (event) => {
-
-        if(stack.length >= 2) {
-            let n2 = stack.pop();
-            let n1 = stack.pop();
-
-            stack.push(n2 + n1);
-            displayStack(stack);
+    // Helper for binary operations
+    function handleBinaryOperation(operation) {
+        if (rpn.stack.length >= 2) {
+            rpn[operation]();
+            displayStack(rpn.stack);
         } else {
             alert("The stack must have at least two items for this operation.");
         }
+    }
 
-    });
-    //do maths            
+    document.getElementById("add").addEventListener("click", () => handleBinaryOperation("add"));
+    document.getElementById("sub").addEventListener("click", () => handleBinaryOperation("subtract"));
+    document.getElementById("mul").addEventListener("click", () => handleBinaryOperation("multiply"));
+    document.getElementById("div").addEventListener("click", () => handleBinaryOperation("divide"));
 
-    let subtract = document.getElementById("sub");
-    //console.log(subtract);
-    subtract.addEventListener("click", (event) => {
-        //console.log("i got called!");
-        let n2 = stack.pop();
-        let n1 = stack.pop();
-
-        stack.push(n2 - n1);
-        displayStack(stack);
-    });
-
-    let clearbutton = document.getElementById("clear");
-    clearbutton.addEventListener("click", (event) => {
-        stack = [];
-        displayStack(stack);
+    // Clear button
+    document.getElementById("clear").addEventListener("click", () => {
+        rpn.clear();
+        displayStack(rpn.stack);
     });
 });
-
 
 function displayStack(stack) {
     let stackDisplay = document.getElementById("stackDisplay");
     stackDisplay.innerHTML = "";
 
-    for(let i = stack.length - 1; i >= 0; i--){
+    for (let i = stack.length - 1; i >= 0; i--) {
         let li = document.createElement("li");
         li.innerText = stack[i];
         stackDisplay.appendChild(li);
-    }  
-
+    }
 }

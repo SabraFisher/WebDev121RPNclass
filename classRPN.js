@@ -1,17 +1,20 @@
-class RPN{
-	push(n){
-		console.log('pushed');
-	}
+class RPN {  /* decouple the calculator logic from the display of the program */
 	
+    stack = []; /* initialize an empty stack */
+
+	push(n) {
+		this.stack.push(n); /* this = calling on a class member of */
+	}
+
 	add() {
-		console.log('added');
+		this.stack.push(n2 + n1);
 	}
-	
+
 	sub() {
-		console.log('subtracted');
+		this.stack.push(n2 - n1);
 	}
-	
+
 	clear() {
-		console.log('cleared');
+		this.stack = [];
 	}
 }
